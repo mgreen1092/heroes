@@ -1,25 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 //always import component from @angular/core, gives the metedata properties:
 //selector, templateUrl, and styleUrls
 import { Hero } from '../hero'
 //import the Hero interface
 // import {HEROES} from '../mock-heroes' this got deleted because of HeroService
 import { HeroService } from '../hero.service';
+import { MessageService } from '../message.service';
 
 @Component({
   selector: 'app-heroes', //matches the name of the HTML element that identifies the componenet
   templateUrl: './heroes.component.html',
   styleUrls: ['./heroes.component.css']
 })
-export class HeroesComponent {
+export class HeroesComponent implements OnInit{
 //always export the component class, like in React, so you can import it elsewhere (AppModule)
 //componenets hero property is type Hero, initialized with id of 1 and name Windstorm 
 // hero: Hero = {
 //   id: 1,
 //   name: 'Windstorm'
 //  }
+  selectedHero?: Hero;
   heroes: Hero [] = []
-  contructor(private heroService: HeroService) {}
+  constructor(private heroService: HeroService, private messageService: MessageService) {}
   // defines a private heroService property and identifies it as a HeroService injection site
   getHeroes(): void {
     // this.heroes= this.heroService.getHeroes() --> removed after adding observables
@@ -33,11 +35,11 @@ export class HeroesComponent {
   ngOnInit(): void {
     this.getHeroes()
   }
-  selectedHero?: Hero;
 
   onSelect(hero: Hero): void {
     this.selectedHero = hero;
     // assigns the clicked hero from the template to the component's selectedHero
+    this.messageService.add(`HeroesComponent: Selected hero id=${hero.id}`)
   }
 }
 

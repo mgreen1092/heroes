@@ -5,6 +5,8 @@ import { HEROES } from './mock-heroes';
 
 import { Observable, of } from 'rxjs';
 
+import { MessageService } from './message.service';
+
 @Injectable({
   // the inject is the object that chooses and injects the provider where the application 
   // requires it
@@ -23,8 +25,11 @@ export class HeroService {
     const heroes = of(HEROES)
     // of(HEROES) returns an Observable<Hero[]> that emits a single value, the array of mock 
     // heroes
+    this.messageService.add('HeroService: fetched heroes')
+    // sends a message when the heroes are fetched
     return heroes
   }
-  constructor() { 
+  constructor(private messageService: MessageService) { 
+    // example of typical service-in-service scenario in which you inject the Message Service into the HeroService which is injected into HeroesComponent
   }
 }
