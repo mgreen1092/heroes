@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 //selector, templateUrl, and styleUrls
 import { Hero } from '../hero'
 //import the Hero interface
+import {HEROES} from '../mock-heroes'
 
 @Component({
   selector: 'app-heroes', //matches the name of the HTML element that identifies the componenet
@@ -12,9 +13,10 @@ import { Hero } from '../hero'
 export class HeroesComponent {
 //always export the component class, like in React, so you can import it elsewhere (AppModule)
 //componenets hero property is type Hero, initialized with id of 1 and name Windstorm 
-hero: Hero = {
-  id: 1,
-  name: 'Windstorm'
- }
+// hero: Hero = {
+//   id: 1,
+//   name: 'Windstorm'
+//  }
+  heroes = HEROES
 }
 
