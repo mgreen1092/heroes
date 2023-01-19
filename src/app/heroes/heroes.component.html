@@ -3,20 +3,30 @@
 
 <!-- <h2>{{hero.name | uppercase}} Details</h2> -->
 <h2>My Heroes</h2>
-<ul class="heroes">
-    <li *ngFor="let hero of heroes">
-        <button type="button" (click)="onSelect(hero)")>
-            <!-- Event binding syntax: parantheses around (click) tell Angular to listen for the
-                 button element click event, when the user clicks the button, Angular executes 
-                 the onSelect(hero) expression -->
-            <span class="badge">{{hero.id}}</span>
-            <!-- hero property doesn't exist, to have access to each indificual hero and 
-                list them all, add ngFor to the li ot iterate through the list of heroes -->
-            <span class="name">{{hero.name}}</span>
-        </button>
-    </li> 
+    <ul class="heroes">
+        <li *ngFor="let hero of heroes">
+            <button type="button" (click)="onSelect(hero)" [class.selected]="hero === selectedHero">
+                <!-- Event binding syntax: parantheses around (click) tell Angular to listen for the
+                    button element click event, when the user clicks the button, Angular executes 
+                    the onSelect(hero) expression -->
+                <!-- You can toggle the CSS style with a class binding -->
+                <span class="badge">{{hero.id}}</span>
+                <!-- hero property doesn't exist, to have access to each indificual hero and 
+                    list them all, add ngFor to the li ot iterate through the list of heroes -->
+                <span class="name">{{hero.name}}</span>
+            </button>
+        </li> 
 
-</ul>
+    </ul>
+    <div *ngIf="selectedHero">
+        <!-- Hero details should only be dispalyed if a hero is selected -->
+        <h2>{{ selectedHero.name | uppercase }} Details</h2>
+        <div>ID: {{selectedHero.id}}</div>
+        <div>
+            <label for="her-name">Hero name: </label>
+            <input id="hero-name" [(ngModel)]="selectedHero.name" placeholder="name">
+        </div>
+    </div>
 <!-- the pipe | character activates the built in UppercasePipe -->
 <!-- Pipes help format strings, currency amounts, dates and other display data -->
 <!-- <div><span>ID: </span>{{hero.id}}</div>
