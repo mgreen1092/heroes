@@ -18,5 +18,11 @@ export class HeroesComponent {
 //   name: 'Windstorm'
 //  }
   heroes = HEROES
+  selectedHero?: Hero;
+
+  onSelect(hero: Hero): void {
+    this.selectedHero = hero;
+    // assigns the clicked hero from the template to the component's selectedHero
+  }
 }
 
