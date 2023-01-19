@@ -3,7 +3,8 @@ import { Component } from '@angular/core';
 //selector, templateUrl, and styleUrls
 import { Hero } from '../hero'
 //import the Hero interface
-import {HEROES} from '../mock-heroes'
+// import {HEROES} from '../mock-heroes' this got deleted because of HeroService
+import { HeroService } from '../hero.service';
 
 @Component({
   selector: 'app-heroes', //matches the name of the HTML element that identifies the componenet
@@ -17,7 +18,21 @@ export class HeroesComponent {
 //   id: 1,
 //   name: 'Windstorm'
 //  }
-  heroes = HEROES
+  heroes: Hero [] = []
+  contructor(private heroService: HeroService) {}
+  // defines a private heroService property and identifies it as a HeroService injection site
+  getHeroes(): void {
+    // this.heroes= this.heroService.getHeroes() --> removed after adding observables
+    // retrieved heroes from the service 
+    this.heroService.getHeroes()
+      .subscribe(heroes => this.heroes = heroes)
+      // subscribe method passes the emitted array to the callback, which sets the component's 
+      // heroes propert. This asynchronous approach works when the HeroService requests heroes 
+      // from the server
+  }
+  ngOnInit(): void {
+    this.getHeroes()
+  }
   selectedHero?: Hero;
 
   onSelect(hero: Hero): void {
