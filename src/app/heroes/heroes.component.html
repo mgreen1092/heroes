@@ -5,7 +5,10 @@
 <h2>My Heroes</h2>
 <ul class="heroes">
     <li *ngFor="let hero of heroes">
-        <button type="button">
+        <button type="button" (click)="onSelect(hero)")>
+            <!-- Event binding syntax: parantheses around (click) tell Angular to listen for the
+                 button element click event, when the user clicks the button, Angular executes 
+                 the onSelect(hero) expression -->
             <span class="badge">{{hero.id}}</span>
             <!-- hero property doesn't exist, to have access to each indificual hero and 
                 list them all, add ngFor to the li ot iterate through the list of heroes -->
