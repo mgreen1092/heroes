@@ -1,6 +1,22 @@
 <!-- <h2>{{hero}}</h2> -->
 <!-- since hero is now an object, need to update the binding template to display the hero's name and id -->
 
-<h2>{{hero.name}}</h2>
+<h2>{{hero.name | uppercase}} Details</h2>
+<!-- the pipe | character activates the built in UppercasePipe -->
+<!-- Pipes help format strings, currency amounts, dates and other display data -->
 <div><span>ID: </span>{{hero.id}}</div>
 <div><span>Name: </span>{{hero.name}}</div>
+
+<div>
+    <label for="name">Hero name: </label>
+    <input id="name" [(ngModel)]="hero.name" placeholder="name">
+    <!-- ngModel is angular's two way data binding syntax -->
+    <!-- Here it is binding to hero.name property to the HTML text box so that data can 
+        flow in both directions. Data can flow from the hero.name property to the text 
+        box and from the text box back to the hero-name -->
+    <!-- Angular needs to know the pieces of the application that fit together and what other 
+        files and libraries the application requires - this is called metadata. The @Components 
+        decorators has some of the metadata, other critical metadata is in @NgModule. The most 
+        import @NgModule decorator annotates the top-level AppModule class (which was created 
+        when we did ng new). This is where you opt in to the FormsModule. -->
+</div>
