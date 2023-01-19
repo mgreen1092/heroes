@@ -18,15 +18,6 @@
         </li> 
 
     </ul>
-    <div *ngIf="selectedHero">
-        <!-- Hero details should only be dispalyed if a hero is selected -->
-        <h2>{{ selectedHero.name | uppercase }} Details</h2>
-        <div>ID: {{selectedHero.id}}</div>
-        <div>
-            <label for="her-name">Hero name: </label>
-            <input id="hero-name" [(ngModel)]="selectedHero.name" placeholder="name">
-        </div>
-    </div>
 <!-- the pipe | character activates the built in UppercasePipe -->
 <!-- Pipes help format strings, currency amounts, dates and other display data -->
 <!-- <div><span>ID: </span>{{hero.id}}</div>

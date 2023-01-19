@@ -1,0 +1,9 @@
+<div *ngIf="hero">
+    <!-- Hero details should only be dispalyed if a hero is selected -->
+    <h2>{{ hero.name | uppercase }} Details</h2>
+    <div>ID: {{hero.id}}</div>
+    <div>
+        <label for="her-name">Hero name: </label>
+        <input id="hero-name" [(ngModel)]="hero.name" placeholder="name">
+    </div>
+</div>
