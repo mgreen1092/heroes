@@ -5,17 +5,19 @@
 <h2>My Heroes</h2>
     <ul class="heroes">
         <li *ngFor="let hero of heroes">
-            <button type="button" (click)="onSelect(hero)" [class.selected]="hero === selectedHero">
+            <a routerLink="/detail/{{hero.id}}">
+            <!-- <button type="button" (click)="onSelect(hero)" [class.selected]="hero === selectedHero"> removed after adding the routerLink-->
                 <!-- Event binding syntax: parantheses around (click) tell Angular to listen for the
                     button element click event, when the user clicks the button, Angular executes 
                     the onSelect(hero) expression -->
                 <!-- You can toggle the CSS style with a class binding -->
-                <span class="badge">{{hero.id}}</span>
+                <span class="badge">{{hero.id}}</span>{{hero.name}}
                 <!-- hero property doesn't exist, to have access to each indificual hero and 
                     list them all, add ngFor to the li ot iterate through the list of heroes -->
-                <span class="name">{{hero.name}}</span>
-            </button>
-        </li> 
+                <!-- <span class="name">{{hero.name}}</span> removed after adding routerLink-->
+            </a>
+            <!-- </button> -->
+        <!-- </li>  -->
 
     </ul>
     <!-- <app-hero-detail [hero]="selectedHero"></app-hero-detail> removed after setting up routes -->
