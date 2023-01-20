@@ -1,5 +1,10 @@
 <h1>{{title}}</h1>
+<nav>
+    <a routerLink="/heroes"></a>
+    <!-- router link matches the path set up in app-routing.module.ts -->
+</nav>
 <!-- bring over heroes component (app-heroes) -->
 <!-- <app-heroes></app-heroes> removed and replaced with router outlet-->
 <router-outlet></router-outlet>
+<!-- router outlet tells the router where to display routed views -->
 <app-messages></app-messages>
