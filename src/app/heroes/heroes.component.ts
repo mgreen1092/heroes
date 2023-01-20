@@ -5,7 +5,7 @@ import { Hero } from '../hero'
 //import the Hero interface
 // import {HEROES} from '../mock-heroes' this got deleted because of HeroService
 import { HeroService } from '../hero.service';
-import { MessageService } from '../message.service';
+
 
 @Component({
   selector: 'app-heroes', //matches the name of the HTML element that identifies the componenet

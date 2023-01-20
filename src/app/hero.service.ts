@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 // ng generate service hero geenrates a skeleton HeroService class
 import {Hero} from './hero'
-import { HEROES } from './mock-heroes';
 
 import { Observable, of } from 'rxjs';
 
@@ -71,6 +70,16 @@ export class HeroService {
     // const hero = HEROES.find(h => h.id === id)! removed this section after adding tap()
     // this.messageService.add(`HeroService: fetched hero id=${id}`)
     // return of(hero)
+  }
+  httpOptions={
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  }
+  updateHero(hero: Hero): Observable<any> {
+    returh this.http.put(this.heroesUrl, hero, this.httpOptions).pipe(
+      tap(_ => this.log(`updated hero id=${hero.id}`)),
+      catchError(this.handleError<any>('updateHero'))
+      // http put takes three paramters, the URL, the data to update (modified hero), and options
+    )
   }
 }
 // How is getHero different from getHeroes?
