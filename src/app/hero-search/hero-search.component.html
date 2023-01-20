@@ -7,6 +7,9 @@
             <!-- since *ngFor cant do anything with an Observable, use the pipe | followed by 
                 async, this identifies Angular's AsyncPipe and subscribes to an Observable 
                 automatically so you wont have to do so in the component class -->
+                <!-- everytime the user types in the search box, the bidning calls search() 
+                    with the text box value as a search term, the searchTerms become an 
+                    observable emitting a steady stream of search terms -->
             <a routerLink="/detail/{{hero.id}}">
                 {{hero.name}}
             </a>
