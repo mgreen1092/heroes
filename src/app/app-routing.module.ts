@@ -5,6 +5,7 @@ import { HeroesComponent } from './heroes/heroes.component';
 // gives the router somewhere to go once you configure the routes
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HeroDetailComponent } from './hero-detail/hero-detail.component';
+import { HttpClientModule } from '@angular/common/http'
 
 const routes: Routes = [
   {path: 'heroes', component: HeroesComponent},
