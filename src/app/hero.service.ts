@@ -9,6 +9,8 @@ import { MessageService } from './message.service';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import { catchError, map, tap } from 'rxjs';
+
 @Injectable({
   // the inject is the object that chooses and injects the provider where the application 
   // requires it
@@ -31,7 +33,21 @@ export class HeroService {
     // heroes
     // this.messageService.add('HeroService: fetched heroes') removed when changed to logging it
     // sends a message when the heroes are fetched
-    return this.http.get<Hero[]>(this.heroesUrl)
+    return this.http.get<Hero[]>(this.heroesUrl).pipe(
+      catchError(this.handleError<Hero[]>('getHeroes', []))
+      // catchError() intercepts an Observable that failed - the operator then passes the erorr 
+      // to the error handling function
+      // handleError reports the error and then returns an innocuous result so that the 
+      // application keeps working
+    )
+  }
+  private handleError<T>(operation = 'operation', result?: T) {
+    // handleError takes a type parameter to return the safe value as the type that the application expects
+    return (error: any): Observable<T> => {
+      console.error(error)
+      this.log(`${operation} failed: ${error.message}`)
+      return of(result as T)
+    }
   }
   constructor(
     private http: HttpClient, 
