@@ -34,7 +34,11 @@ export class HeroService {
     // this.messageService.add('HeroService: fetched heroes') removed when changed to logging it
     // sends a message when the heroes are fetched
     return this.http.get<Hero[]>(this.heroesUrl).pipe(
+      tap(_ => this.log('fetched heroes')),
+      // tap operator looks at the observable values, does something with the values, and 
+      // passes them along - the tap() callback doesn't access the values themselves
       catchError(this.handleError<Hero[]>('getHeroes', []))
+      // catchError(this.handleError<Hero[]>('getHeroes', [])) removed after using tap
       // catchError() intercepts an Observable that failed - the operator then passes the erorr 
       // to the error handling function
       // handleError reports the error and then returns an innocuous result so that the 
@@ -42,7 +46,8 @@ export class HeroService {
     )
   }
   private handleError<T>(operation = 'operation', result?: T) {
-    // handleError takes a type parameter to return the safe value as the type that the application expects
+    // handleError takes a type parameter to return the safe value as the type that the 
+    // application expects
     return (error: any): Observable<T> => {
       console.error(error)
       this.log(`${operation} failed: ${error.message}`)
@@ -58,8 +63,18 @@ export class HeroService {
   getHero(id: number): Observable<Hero> {
     // returns a mock hero as an Observable RxJS of() function
     // assuming that a hero with the specified ID always exists
-    const hero = HEROES.find(h => h.id === id)!
-    this.messageService.add(`HeroService: fetched hero id=${id}`)
-    return of(hero)
+    const url = `${this.heroesUrl}/${id}`
+    return this.http.get<Hero>(url).pipe(
+      tap(_ => this.log(`fetched hero id=${id}`)),
+      catchError(this.handleError<Hero>(`getHero id=${id}`))
+    )
+    // const hero = HEROES.find(h => h.id === id)! removed this section after adding tap()
+    // this.messageService.add(`HeroService: fetched hero id=${id}`)
+    // return of(hero)
   }
 }
+// How is getHero different from getHeroes?
+// getHeror constructs a request URL with the desired heroe's id
+// the server should respond with a signle hero rather than an array of heroes
+// getHero returns an Observable<Hero> which is an observale of Hero objects rather than an 
+// observable of Hero array
