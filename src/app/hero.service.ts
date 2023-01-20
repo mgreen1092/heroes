@@ -82,14 +82,14 @@ export class HeroService {
     )
   }
   addHero(hero: Hero): Observable<Hero> {
-    return this.http.post<hero>(this.heroesUrl, hero, this.httpOptions).pipe(
+    return this.http.post<Hero>(this.heroesUrl, hero, this.httpOptions).pipe(
       tap((newHero: Hero) => this.log(`added hero w/ id=${newHero.id}`)),
       catchError(this.handleError<Hero>('addHero'))
       // addHero calls Http.post() instead of put()
       // addHero expects the server to create an id for the new hero which it returns in the observale<Hero> to the caller
     )
   }
-  deleteHero(id: number): Observale<Hero> {
+  deleteHero(id: number): Observable<Hero> {
     const url = `${this.heroesUrl}/${id}`;
     return this.http.delete<Hero>(url, this.httpOptions).pipe(
       tap(_ => this.log(`deleted hero id=${id}`)),
@@ -107,6 +107,9 @@ export class HeroService {
         this.log(`no heroes matching "${term}"`)),
       catchError(this.handleError<Hero[]>('searchHeroes', []))
     )
+  }
+  log(arg0: string): void {
+    throw new Error('Method not implemented.');
   }
 }
 // How is getHero different from getHeroes?
