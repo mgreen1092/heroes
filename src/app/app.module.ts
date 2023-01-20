@@ -14,7 +14,8 @@ import { DashboardComponent } from './dashboard/dashboard.component'; // <-- NgM
 import { HttpClientModule } from '@angular/common/http'
 // how angular communicates with a remote server over HTTP
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from './in-memory-data.service'
+import { InMemoryDataService } from './in-memory-data.service';
+import { HeroSearchComponent } from './hero-search/hero-search.component'
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { InMemoryDataService } from './in-memory-data.service'
     HeroesComponent,
     HeroDetailComponent,
     MessagesComponent,
-    DashboardComponent
+    DashboardComponent,
+    HeroSearchComponent
   ],
   imports: [
     BrowserModule,
