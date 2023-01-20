@@ -7,6 +7,8 @@ import { Observable, of } from 'rxjs';
 
 import { MessageService } from './message.service';
 
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 @Injectable({
   // the inject is the object that chooses and injects the provider where the application 
   // requires it
@@ -20,16 +22,21 @@ import { MessageService } from './message.service';
 // injected dependencies 
 // @Injectable accepts metadata object for the service, the same way the @Component decorator did
 export class HeroService {
+  private heroesUrl = 'api/heroes'
+  // URL to web API
   getHeroes(): Observable<Hero[]> {
     // Observable is one of the key classes in the RxJS library
-    const heroes = of(HEROES)
+    // const heroes = of(HEROES)
     // of(HEROES) returns an Observable<Hero[]> that emits a single value, the array of mock 
     // heroes
-    this.messageService.add('HeroService: fetched heroes')
+    // this.messageService.add('HeroService: fetched heroes') removed when changed to logging it
     // sends a message when the heroes are fetched
-    return heroes
+    return this.http.get<Hero[]>(this.heroesUrl)
   }
-  constructor(private messageService: MessageService) { 
+  constructor(
+    private http: HttpClient, 
+    // private messageService: MessageService,
+    private messageService: MessageService) { 
     // example of typical service-in-service scenario in which you inject the Message Service into the HeroService which is injected into HeroesComponent
   }
   getHero(id: number): Observable<Hero> {
