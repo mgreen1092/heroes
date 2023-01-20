@@ -32,4 +32,11 @@ export class HeroService {
   constructor(private messageService: MessageService) { 
     // example of typical service-in-service scenario in which you inject the Message Service into the HeroService which is injected into HeroesComponent
   }
+  getHero(id: number): Observable<Hero> {
+    // returns a mock hero as an Observable RxJS of() function
+    // assuming that a hero with the specified ID always exists
+    const hero = HEROES.find(h => h.id === id)!
+    this.messageService.add(`HeroService: fetched hero id=${id}`)
+    return of(hero)
+  }
 }
