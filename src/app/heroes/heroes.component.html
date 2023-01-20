@@ -16,10 +16,18 @@
                     list them all, add ngFor to the li ot iterate through the list of heroes -->
                 <!-- <span class="name">{{hero.name}}</span> removed after adding routerLink-->
             </a>
+            <button type="button" class="delete" title="delete hero" 
+            (click)="delete(hero)">Delete</button>
             <!-- </button> -->
         <!-- </li>  -->
 
     </ul>
+<div>
+    <label for="new-hero">Hero name: </label>
+    <input id="new-hero" #heroName>
+    <button type="button" class="add-button" (click)="add(heroName.value); heroName.value=''">Add Hero</button>
+    <!--  -->
+</div>
     <!-- <app-hero-detail [hero]="selectedHero"></app-hero-detail> removed after setting up routes -->
     <!-- [hero]="selectedHero" is an Agular property binding connects the hero clicked on as selectedHero -->
 <!-- the pipe | character activates the built in UppercasePipe -->

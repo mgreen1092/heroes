@@ -30,11 +30,24 @@ export class HeroesComponent implements OnInit{
     this.heroService.getHeroes()
       .subscribe(heroes => this.heroes = heroes)
       // subscribe method passes the emitted array to the callback, which sets the component's 
-      // heroes propert. This asynchronous approach works when the HeroService requests heroes 
+      // heroes property. This asynchronous approach works when the HeroService requests heroes 
       // from the server
   }
   ngOnInit(): void {
     this.getHeroes()
+  }
+  add(name: string): void {
+    name=name.trim();
+    if(!name) { return }
+    this.heroService.addHero({ name } as Hero).subscribe(hero => {
+      this.heroes.push(hero)
+    })
+    // when the guven name isnt blank, the handler creates an object based on the hero's name. The handler passes the object name to the service's addHero() method
+    // when addHero() creates a new object, the subscribe() callback recived the new hero and pushes it into the heroes list for display
+  }
+  delete(hero: Hero): void {
+    this.heroes = this.heroes.filter(h => h !== hero);
+    this.heroService.deleteHero(hero.id).subscribe();
   }
 
   // onSelect(hero: Hero): void {

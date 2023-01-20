@@ -75,10 +75,25 @@ export class HeroService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   }
   updateHero(hero: Hero): Observable<any> {
-    returh this.http.put(this.heroesUrl, hero, this.httpOptions).pipe(
+    return this.http.put(this.heroesUrl, hero, this.httpOptions).pipe(
       tap(_ => this.log(`updated hero id=${hero.id}`)),
       catchError(this.handleError<any>('updateHero'))
       // http put takes three paramters, the URL, the data to update (modified hero), and options
+    )
+  }
+  addHero(hero: Hero): Observable<Hero> {
+    return this.http.post<hero>(this.heroesUrl, hero, this.httpOptions).pipe(
+      tap((newHero: Hero) => this.log(`added hero w/ id=${newHero.id}`)),
+      catchError(this.handleError<Hero>('addHero'))
+      // addHero calls Http.post() instead of put()
+      // addHero expects the server to create an id for the new hero which it returns in the observale<Hero> to the caller
+    )
+  }
+  deleteHero(id: number): Observale<Hero> {
+    const url = `${this.heroesUrl}/${id}`;
+    return this.http.delete<Hero>(url, this.httpOptions).pipe(
+      tap(_ => this.log(`deleted hero id=${id}`)),
+      catchError(this.handleError<Hero>('deleteHero'))
     )
   }
 }
