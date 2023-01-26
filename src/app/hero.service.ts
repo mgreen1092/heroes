@@ -23,8 +23,18 @@ import { catchError, map, tap } from 'rxjs';
 // injected dependencies 
 // @Injectable accepts metadata object for the service, the same way the @Component decorator did
 export class HeroService {
+  httpOptions={
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  }
   private heroesUrl = 'api/heroes'
   // URL to web API
+  
+  constructor(
+    private http: HttpClient, 
+    // private messageService: MessageService,
+    private messageService: MessageService) { 
+    // example of typical service-in-service scenario in which you inject the Message Service into the HeroService which is injected into HeroesComponent
+  }
   getHeroes(): Observable<Hero[]> {
     // Observable is one of the key classes in the RxJS library
     // const heroes = of(HEROES)
@@ -44,35 +54,29 @@ export class HeroService {
       // application keeps working
     )
   }
-  private handleError<T>(operation = 'operation', result?: T) {
-    // handleError takes a type parameter to return the safe value as the type that the 
-    // application expects
-    return (error: any): Observable<T> => {
-      console.error(error)
-      this.log(`${operation} failed: ${error.message}`)
-      return of(result as T)
-    }
-  }
-  constructor(
-    private http: HttpClient, 
-    // private messageService: MessageService,
-    private messageService: MessageService) { 
-    // example of typical service-in-service scenario in which you inject the Message Service into the HeroService which is injected into HeroesComponent
+  getHeroNo404<Data>(id: number): Observable<Hero> {
+    const url = `${this.heroesUrl}/?id=${id}`;
+    return this.http.get<Hero[]>(url)
+      .pipe(
+        map(heroes => heroes[0]), // returns a {0|1} element array
+        tap(h => {
+          const outcome = h ? 'fetched' : 'did not find';
+          this.log(`${outcome} hero id=${id}`);
+        }),
+        catchError(this.handleError<Hero>(`getHero id=${id}`))
+      );
   }
   getHero(id: number): Observable<Hero> {
     // returns a mock hero as an Observable RxJS of() function
     // assuming that a hero with the specified ID always exists
-    const url = `${this.heroesUrl}/${id}`
+    const url = `${this.heroesUrl}/${id}`;
     return this.http.get<Hero>(url).pipe(
       tap(_ => this.log(`fetched hero id=${id}`)),
       catchError(this.handleError<Hero>(`getHero id=${id}`))
-    )
+    );
     // const hero = HEROES.find(h => h.id === id)! removed this section after adding tap()
     // this.messageService.add(`HeroService: fetched hero id=${id}`)
     // return of(hero)
-  }
-  httpOptions={
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   }
   updateHero(hero: Hero): Observable<any> {
     return this.http.put(this.heroesUrl, hero, this.httpOptions).pipe(
@@ -94,22 +98,36 @@ export class HeroService {
     return this.http.delete<Hero>(url, this.httpOptions).pipe(
       tap(_ => this.log(`deleted hero id=${id}`)),
       catchError(this.handleError<Hero>('deleteHero'))
-    )
+    );
   }
   searchHeroes(term: string): Observable<Hero[]> {
     if (!term.trim()) {
-      return of([])
-      // if nto search term, return empty hero array
+      // if not search term, return empty hero array.
+      return of([]);
     }
     return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(
       tap(x => x.length ?
-        this.log(`found heroes matching "${term}`) :
-        this.log(`no heroes matching "${term}"`)),
+         this.log(`found heroes matching "${term}"`) :
+         this.log(`no heroes matching "${term}"`)),
       catchError(this.handleError<Hero[]>('searchHeroes', []))
-    )
+    );
   }
-  log(arg0: string): void {
-    throw new Error('Method not implemented.');
+  
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+
+      // TODO: send the error to remote logging infrastructure
+      console.error(error); // log to console instead
+
+      // TODO: better job of transforming error for user consumption
+      this.log(`${operation} failed: ${error.message}`);
+
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
+  }
+  private log(message: string): void {
+    throw new Error(`HeroService: ${message}`);
   }
 }
 // How is getHero different from getHeroes?
